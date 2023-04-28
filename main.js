@@ -1,19 +1,14 @@
 const port = 3000,
 express = require("express"),
 app = express(),
-// http = require("http"),
-// httpStatus = require("http-status-codes"),
 homeController = require("./controllers/homeController"),
-router = require("./router"),
-contentTypes = require("./contentTypes"),
-utils = require("./utils");
+layouts = require("express-ejs-layouts");
 
-app.get("/", (req, res) => {
-    res.send("Hello, this is express!");
-})
-.listen(port, () => {
-    console.log(`The Express.js server has started and is listening on port number ${port}`);
-});
+app.set("view engine", "ejs");
+
+app.use(layouts);
+
+app.get("/", homeController.sendIndex);
 
 app.post("/contact", (req, res) => {
     res.send("Contact information submitted successfully");
@@ -21,25 +16,6 @@ app.post("/contact", (req, res) => {
 
 app.get("/shop/:cactus", homeController.sendReqParam);
 
-// router.get("/", (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.htm);
-//     utils.getFile("views/index.html", res);
-// });
-    
-// router.get("/shop.html", (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.html);
-//     utils.getFile("views/shop.html", res);
-// });
-
-// router.get("/contact.html", (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.html);
-//     utils.getFile("views/contact.html", res);
-// });
-
-// router.post("/", (req, res) => {
-//     res.writeHead(httpStatus.OK, contentTypes.html);
-//     utils.getFile("views/thanks.html", res);
-// });
-
-// http.createServer(router.handle).listen(port);
-// console.log(`The server is listening on port number: ${port}`);
+app.listen(port, () => {
+    console.log(`Server running on port: ${port}`);
+});
